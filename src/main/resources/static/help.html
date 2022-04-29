@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Help</title>
+</head>
+<body>
+<h1>Help</h1>
+<p>Afin de vous aider lors de l'utilisation de notre API, voici quelques outils</p>
+<p>Liste des articles</p>
+<ul>
+	<li>
+		<p>Format XML</p>
+		<ul>
+			<li>URL : /rss22/resume/xml</li>
+			<li>Méthode : GET</li>
+			<li>Affiche la liste des articles stockés</li>
+		</ul>
+	</li>
+	<li>
+		<p>Format HTML</p>
+		<ul>
+			<li>URL : /rss22/resume/html</li>
+			<li>Méthode : GET</li>
+			<li>Affiche la liste des articles stockés</li>
+		</ul>
+	</li>
+</ul>
+
+<p>Détails des articles</p>
+<ul>
+	<li>
+		<p>Format XML</p>
+		<ul>
+			<li>URL : /rss22/resume/xml/{guid}
+		{guid} = valeur numérique de l’identifiant</li>
+			<li>Méthode : GET</li>
+			<li>Affiche le contenu complet de l’article dont l’identifiant est {guid}</li>
+		</ul>
+	</li>
+	<li>
+		<p>Format HTML</p>
+		<ul>
+			<li>URL : /rss22/html/{guid}
+		{guid} = valeur numérique de l’identifiant</li>
+			<li>Méthode : GET</li>
+			<li>Affiche le contenu complet de l’article dont l’identifiant est {guid}</li>
+		</ul>
+	</li>
+</ul>
+<p>Ajout d'un artcile dans la base</p>
+<ul>
+	<li>URL : rss22/insert</li>
+	<li>Méthode : POST</li>
+	<li>Le flux reçu est validé par le schéma XSD de définition  rss22
+Si le flux est déjà présent, (même titre et date) alors une indication d’erreur est retournée.
+Si l’opération est réussie, alors le flux est ajouté à la base et sa persistance est assurée.</li>
+</ul>
+<p>Suppression d'un article</p>
+<ul>
+	<li>URL : /rss22/delete/{guid}
+{guid} = valeur numérique de l’identifiant</li>
+	<li>Méthode : DELETE</li>
+	<li>Suppression de l’article dont l’identifiant est {guid}
+Pour garantir la cohérence, tout flux rss22 vide (c’est à dire ne contenant aucun article) doit 
+être supprimé</li>
+</ul>
+</body>
+</html>
