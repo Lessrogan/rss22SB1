@@ -8,18 +8,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import fr.univrouen.rss22.model.Item;
+import fr.univrouen.rss22.model.ItemBackup;
 
 @RestController
 public class RSSController {
 
-	@GetMapping("/resume/xml")
-	public ModelAndView getListRSSinXML() {
-		ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("xml/rss22.xml");
-        return modelAndView;
-		
-	}
 	@GetMapping("/guid")
 	public String getRSSinXML(
 		@RequestParam(value = "guid") String texte) {
@@ -36,8 +29,8 @@ public class RSSController {
 	}
 	
 	@RequestMapping(value = "/xml", produces = MediaType.APPLICATION_XML_VALUE)
-	public @ResponseBody Item getXML() {
-		Item it = new Item("12345678","Test item","2022-05-01T11:22:33");
+	public @ResponseBody ItemBackup getXML() {
+		ItemBackup it = new ItemBackup("12345678","Test item","2022-05-01T11:22:33");
 		return it;
 	}
 }
