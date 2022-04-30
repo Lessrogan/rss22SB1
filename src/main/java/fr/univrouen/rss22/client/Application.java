@@ -1,4 +1,4 @@
-package client;
+package fr.univrouen.rss22.client;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
@@ -30,7 +31,7 @@ public class Application {
 	private JRadioButton get;
 	private JRadioButton post;
 	private JTextField url;
-	private JTextField response;
+	private JTextArea response;
 	
 	
 	 
@@ -55,7 +56,7 @@ public class Application {
 	//OUTILS
 	 
 	private void createView() {
-		 mainFrame = new JFrame("Apllication");
+		 mainFrame = new JFrame("Application");
 	     final int frameWidth = 750;
 	     final int frameHeight = 340;
 	     mainFrame.setPreferredSize(new Dimension(frameWidth, frameHeight));
@@ -69,11 +70,11 @@ public class Application {
 	     post = new JRadioButton("POST");
 	     
 	     url = new JTextField();
-	     response = new JTextField();
+	     response = new JTextArea();
 	        
 	}
 	private void placeComponents() {
-		 JPanel p = new JPanel(new GridLayout(1,3)); {
+		 JPanel mainPanel = new JPanel(new GridLayout(1,3)); {
 			 JPanel txtPanel = new JPanel(new GridLayout(2,0)); {
 				 txtPanel.add(url);
 				 txtPanel.add(response);
@@ -91,11 +92,11 @@ public class Application {
 				 
 				 
 			 }
-			p.add(txtPanel);
-			p.add(buttonPanel);
-			p.add(send);
+			mainPanel.add(txtPanel);
+			mainPanel.add(buttonPanel);
+			mainPanel.add(send);
 		 }
-		 mainFrame.add(p);
+		 mainFrame.add(mainPanel);
 		
 	}
 	private void createController() {
