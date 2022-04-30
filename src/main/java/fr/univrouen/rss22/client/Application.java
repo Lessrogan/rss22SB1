@@ -10,6 +10,7 @@ import java.util.Observer;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -32,7 +33,7 @@ public class Application {
 	private JRadioButton post;
 	private JTextField url;
 	private JTextArea response;
-	
+	private ButtonGroup methods;
 	
 	 
 	 //CONSTRUCTEURS
@@ -40,8 +41,8 @@ public class Application {
 	public Application() {
 		//createModel();
 		createView();
-	    placeComponents();
-	    createController();
+	    placeComponents();            
+	    createController();                
 	 }
 	 
 	 //COMMANDES
@@ -61,15 +62,21 @@ public class Application {
 	     final int frameHeight = 340;
 	     mainFrame.setPreferredSize(new Dimension(frameWidth, frameHeight));
 	     
-	     send = new JButton("send");
+	     send = new JButton("Send");
 	     importer = new JButton("Import");
 	     write = new JButton("Write");
 	     settings = new JButton("Settings");
 	     
+	     methods = new ButtonGroup();
 	     get = new JRadioButton("GET");
+	     get.setActionCommand("get");
 	     post = new JRadioButton("POST");
+	     post.setActionCommand("post");
+
+	     methods.add(get);
+	     methods.add(post);
 	     
-	     url = new JTextField();
+	     url = new JTextField("127.0.0.1:8080/");
 	     response = new JTextArea();
 	        
 	}
@@ -77,14 +84,14 @@ public class Application {
 		 JPanel mainPanel = new JPanel(new GridLayout(1,3)); {
 			 JPanel txtPanel = new JPanel(new GridLayout(2,0)); {
 				 txtPanel.add(url);
-				 txtPanel.add(response);
+				 txtPanel.add(response);                                
 			 }
 			 JPanel buttonPanel = new JPanel(new GridLayout(4, 0)); {
-				 JPanel methodePanel = new JPanel(new GridLayout(2,0)); {
-					 methodePanel.add(get);
-					 methodePanel.add(post);
+				 JPanel methodPanel = new JPanel(new GridLayout(2,0)); {
+					 methodPanel.add(get);
+					 methodPanel.add(post);
 				 }
-				 buttonPanel.add(methodePanel);
+				 buttonPanel.add(methodPanel);
 				// buttonPanel.add(send);
 				 buttonPanel.add(importer);
 				 buttonPanel.add(write);
@@ -100,7 +107,13 @@ public class Application {
 		
 	}
 	private void createController() {
-		// TODO Auto-generated method stub
+		send.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ButtonModel selection = methods.getSelection();
+				System.out.println("[ SEND ]\n" + response.getText() + "\n(TO)\n" + url.getText() + "(" + (selection != null ? selection.getActionCommand(): "none") + ")");
+			}
+		});
 		
 	}
 	
