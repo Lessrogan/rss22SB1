@@ -78,6 +78,7 @@ public class Application {
 	     
 	     url = new JTextField("127.0.0.1:8080/");
 	     response = new JTextArea();
+	     response.setEditable(false);
 	        
 	}
 	private void placeComponents() {

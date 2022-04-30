@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
+import java.lang.Enum;
 
 @XmlRootElement(name = "item")
 @XmlAccessorType(XmlAccessType.NONE)

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns="http://univrouen.fr/rss22"
+	targetNamespace="http://univrouen.fr/rss22"
+	elementFormDefault="qualified" >
+	<xs:element name="feed" type="feedType"/>
+	
+	<xs:simpleType name="restrictedString">
+  		<xs:restriction base="xs:string">
+   			<xs:maxLength value="128"/>
+  		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="restrictedDate">
+		<xs:restriction base="xs:date">
+			<xs:pattern value="rfc3339"></xs:pattern>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:complexType name="linkType" >
+		<xs:attribute name="rel" type="relType"/>
+		<xs:attribute name="url" type="urlType"/>
+	</xs:complexType>
+	
+	<xs:simpleType name="mimeType">
+		<xs:restriction base="urlType">
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="relType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="self"/>
+			<xs:enumeration value="alternate"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="langType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[a-z]{2,3}(-([A-Z]{2}|[0-9]{3}))?"></xs:pattern>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="urlType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[^-_\s]+"></xs:pattern>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:complexType name="feedType">
+		<xs:sequence>
+			<xs:element name="title" type="restrictedString" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="pubDate" type="xs:date" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="copyright" type="restrictedString" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="link" type="linkType" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="item" type="itemType" minOccurs="1" maxOccurs="10"/>
+		</xs:sequence>
+		<xs:attribute name="lang" type="langType"/>
+	</xs:complexType>
+	
+	<xs:complexType name="itemType">
+		<xs:sequence>
+			<xs:element name="guid" type="urlType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="title" type="restrictedString" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="category" type="categoryType" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:choice minOccurs="1" maxOccurs="1">
+				<xs:element name="published" type="xs:date"/>
+				<xs:element name="updated" type="xs:date"/>
+			</xs:choice>
+			<xs:element name="image" type="imageType" minOccurs="0" maxOccurs="1"/>
+			<xs:choice minOccurs="1" maxOccurs="unbounded">
+				<xs:element name="author" type="personType"/>
+				<xs:element name="contributor" type="personType"/>
+			</xs:choice>
+			<xs:element name="content" type="contentType" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	
+	<xs:complexType name="contentType">
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+			<xs:attribute name="src" type="xs:anyURI" use="optional"/>
+        </xs:extension>
+      </xs:simpleContent>
+	</xs:complexType>
+	
+	<xs:complexType name="categoryType">
+		<xs:attribute name="term" type="xs:string"/>
+	</xs:complexType>
+	
+	<xs:complexType name="imageType">
+		<xs:attribute name="href" type="xs:anyURI"/>
+		<xs:attribute name="format" type="formatType"/>
+	</xs:complexType>
+	
+	<xs:simpleType name="formatType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="GIF"/>
+			<xs:enumeration value="JPEG"/>
+			<xs:enumeration value="JPEG"/>
+			<xs:enumeration value="BMP"/>
+			<xs:enumeration value="PNG"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:complexType name="personType">
+		<xs:all>
+			<xs:element name="name" type="personLengthRestrictionType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="email" type="mailType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="uri" type="urlType" minOccurs="0" maxOccurs="1"/>
+		</xs:all>
+	</xs:complexType>
+	
+	<xs:simpleType name="personLengthRestrictionType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="64"></xs:maxLength>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="mailType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[^#,:;()/=~!?$*=\[\]'*&amp;]+"></xs:pattern>
+		</xs:restriction>
+	</xs:simpleType>
+	
+</xs:schema>

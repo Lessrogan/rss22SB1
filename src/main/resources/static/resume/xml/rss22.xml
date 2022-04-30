@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:feed xmlns:p="http://univrouen.fr/rss22" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://univrouen.fr/rss22 rss22.xsd ">
+  <p:title>RSS22 XML1</p:title>
+  <p:pubDate>2001-11-28</p:pubDate>
+  <p:copyright>o'top</p:copyright>
+  <p:link url="http://youtube.com"/>
+  <p:item>
+    <p:guid>1</p:guid>
+    <p:title>Les chiens sont de sortie</p:title>
+    <p:category term="Documentaire"/>
+    <p:published>1999-12-30</p:published>
+    <p:author>
+      <p:name>Denise Antoine</p:name>
+    </p:author>
+    <p:content>Avec l'ouverture de la chasse, les chiens sont de sortie.</p:content>
+  </p:item>
+  <p:item>
+  	<p:guid>2</p:guid>
+  	<p:title>Mon premier jour de faculté</p:title>
+    <p:category term="Jeunesse"/>
+  	<p:published>2001-11-28</p:published>
+  	<p:author>
+  		<p:name>Bertin Nicolas</p:name>
+  	</p:author>
+  	<p:content>Aujourd'hui est mon premier jour de faculté. Youpi !</p:content>
+  </p:item>
+</p:feed>

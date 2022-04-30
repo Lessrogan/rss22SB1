@@ -6,17 +6,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import fr.univrouen.rss22.model.Item;
 
-//public class GetController {
-//}
 @RestController
 public class RSSController {
 
-	@GetMapping("/resume")
-	public String getListRSSinXML() {
-		return "Envoi de la liste des flux RSS";
+	@GetMapping("/resume/xml")
+	public ModelAndView getListRSSinXML() {
+		ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("xml/rss22.xml");
+        return modelAndView;
+		
 	}
 	@GetMapping("/guid")
 	public String getRSSinXML(
