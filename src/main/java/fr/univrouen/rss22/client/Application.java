@@ -112,7 +112,9 @@ public class Application {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ButtonModel selection = methods.getSelection();
-				System.out.println("[ SEND ]\n" + response.getText() + "\n(TO)\n" + url.getText() + "(" + (selection != null ? selection.getActionCommand(): "none") + ")");
+				System.out.println("[ SEND ]\n" + response.getText() + "\n"
+									+ "(TO)\n" + url.getText()
+									+ "(" + (selection != null ? selection.getActionCommand(): "none") + ")");
 			}
 		});
 		

@@ -1,5 +1,6 @@
 package fr.univrouen.rss22.controllers;
 
+import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Date;
@@ -11,8 +12,10 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamWriter;
+import javax.xml.transform.TransformerException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,17 +40,26 @@ public class DBController {
 		return "Saved!";
 	}
 	
-	@GetMapping("/resume/xml") 
-	public @ResponseBody String getXMLRSS() throws JAXBException {
+	@GetMapping(value = "/resume/xml", produces = MediaType.APPLICATION_XML_VALUE) 
+	public @ResponseBody Feed getXMLRSS() throws JAXBException {
 		Feed feed = new Feed();
 		Iterator<Item> items = itemRepository.findAll().iterator();
 		while (items.hasNext()) {
 			feed.addItem(items.next());
 		}
-		String xml = XMLManager.getXMLFromFeed(feed);
 		
+		return feed;
+	}
+
+	@GetMapping(value = "/resume/html") 
+	public @ResponseBody String getHTMLRSS() throws JAXBException, TransformerException, IOException {
+		Feed feed = new Feed();
+		Iterator<Item> items = itemRepository.findAll().iterator();
+		while (items.hasNext()) {
+			feed.addItem(items.next());
+		}
+		String xml = XMLManager.getHTMLFromFeed(feed);
 		return xml;
 	}
-	
 	
 }

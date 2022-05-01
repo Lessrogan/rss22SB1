@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<p:feed xmlns:p="http://univrouen.fr/rss22">
+    <p:item>
+        <p:guid>1</p:guid>
+        <p:title>ceci est un braquage</p:title>
+    </p:item>
+    <p:item>
+        <p:guid>2</p:guid>
+        <p:title>OUAF OUAF C'EST LA BRIGADE CANINE</p:title>
+    </p:item>
+    <p:item>
+        <p:guid>3</p:guid>
+        <p:title>Oh non, des CABOTS!</p:title>
+    </p:item>
+    <p:item>
+        <p:guid>4</p:guid>
+        <p:title>On dit CHIEN !! PAS CABOT !!!!</p:title>
+    </p:item>
+</p:feed>

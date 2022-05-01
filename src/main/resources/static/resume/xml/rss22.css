@@ -1,0 +1,11 @@
+.guid_title {
+	font-style: italic;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table * {
+	border: solid 1px black;
+}
