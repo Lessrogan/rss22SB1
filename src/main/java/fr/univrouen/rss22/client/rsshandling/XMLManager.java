@@ -110,13 +110,13 @@ public class XMLManager {
 	public static String getHTMLFromFeed(Feed feed) throws TransformerException, JAXBException, IOException {
 		Source input = new StreamSource(new StringReader(getXMLFromFeed(feed)));
 		Source xslt = new StreamSource("file:src/main/resources/static/resume/xml/rss22.xslt");
-		String outputPath = "src/main/resources/static/resume/xml/rss22.html";
-		Result output = new StreamResult(new File(outputPath)); 
+		StringWriter writer = new StringWriter();
+		StreamResult result = new StreamResult( writer );
 		TransformerFactory factory = TransformerFactory.newInstance();
 		Transformer transformer = factory.newTransformer(xslt);
 		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-		transformer.transform(input, output);
-		return Files.readString(Paths.get(outputPath));
+		transformer.transform(input, result);
+		return writer.getBuffer().toString();
 	}
 	
 	public static void saveFeed(Feed feed, String fileName) throws JAXBException, IOException {
@@ -137,10 +137,6 @@ public class XMLManager {
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document document = builder.parse(stream);
         
-        System.out.println(getStringFromXmlDocument(document));
-        
-        Document newXmlDocument = DocumentBuilderFactory.newInstance()
-                .newDocumentBuilder().newDocument();
         NodeList itemNodes = document.getDocumentElement().getChildNodes();
         
         List<String> nodesToKeep = new ArrayList<String>(); {
@@ -148,7 +144,6 @@ public class XMLManager {
         	nodesToKeep.add("p:title");
         	nodesToKeep.add("p:published");
         }
-        
         for (int i = 0; i < itemNodes.getLength(); i++) {
             Node itemNode = itemNodes.item(i);
             NodeList itemAttributeNodes = itemNode.getChildNodes();
@@ -173,7 +168,5 @@ public class XMLManager {
 	    transformer.transform(source, result);
 	    return writer.toString();
 	}
-	
-	
 	
 }

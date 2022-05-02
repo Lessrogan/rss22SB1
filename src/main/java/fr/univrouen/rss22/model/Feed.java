@@ -53,4 +53,16 @@ public class Feed {
 		items.add(item);
 	}
 	
+	public void removeItem(Item item) {
+		items.remove(item);
+	}
+	
+	public String getTitle() {
+		return title;
+	}
+	
+	public String getPubDate() {
+		return pubDate;
+	}
+	
 }
