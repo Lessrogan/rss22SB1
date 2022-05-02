@@ -1,55 +1,58 @@
 package fr.univrouen.rss22.client.rsshandling;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.net.URI;
-import java.nio.file.FileSystem;
 import java.nio.file.Files;
-import java.nio.file.LinkOption;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.WatchKey;
-import java.nio.file.WatchService;
-import java.nio.file.WatchEvent.Kind;
-import java.nio.file.WatchEvent.Modifier;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.namespace.NamespaceContext;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
-import org.xml.sax.InputSource;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.ls.DOMImplementationLS;
+import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXNotRecognizedException;
-import org.xml.sax.SAXNotSupportedException;
-import org.xml.sax.XMLReader;
 
 import fr.univrouen.rss22.model.Item;
 import fr.univrouen.rss22.model.Feed;
 
 
 public class XMLManager {
-
+	
 	public static Item getItemFromXML(String xml) throws JAXBException {
         JAXBContext jc = JAXBContext.newInstance(Item.class);
         Unmarshaller unmarshaller = jc.createUnmarshaller();
@@ -100,9 +103,12 @@ public class XMLManager {
         return sw.toString();		
 	}
 	
+	public static String getRestrictedXMLFromFeed(Feed feed) throws JAXBException, XPathExpressionException, TransformerException, ParserConfigurationException, SAXException, IOException {
+        return getRestrictedXML(getXMLFromFeed(feed));	
+	}
+	
 	public static String getHTMLFromFeed(Feed feed) throws TransformerException, JAXBException, IOException {
-		saveFeed(feed, "rss22.tmp.xml");
-		Source input = new StreamSource("file:src/main/resources/static/resume/xml/rss22.tmp.xml");
+		Source input = new StreamSource(new StringReader(getXMLFromFeed(feed)));
 		Source xslt = new StreamSource("file:src/main/resources/static/resume/xml/rss22.xslt");
 		String outputPath = "src/main/resources/static/resume/xml/rss22.html";
 		Result output = new StreamResult(new File(outputPath)); 
@@ -115,12 +121,59 @@ public class XMLManager {
 	
 	public static void saveFeed(Feed feed, String fileName) throws JAXBException, IOException {
 		String xml = getXMLFromFeed(feed);
-		System.out.println(xml);
 		FileWriter fileWriter = new FileWriter(new File("src/main/resources/static/resume/xml/" + fileName));
 		BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 		bufferedWriter.write(xml);
 		bufferedWriter.flush();
 		bufferedWriter.close();
 	}
+	
+	public static String getRestrictedXML(String xml) throws XPathExpressionException, TransformerException, ParserConfigurationException, SAXException, IOException {
+        InputStream stream = new ByteArrayInputStream(xml.getBytes());
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setNamespaceAware(true);
+        factory.setValidating(true);
+        factory.setIgnoringElementContentWhitespace(true);
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document document = builder.parse(stream);
+        
+        System.out.println(getStringFromXmlDocument(document));
+        
+        Document newXmlDocument = DocumentBuilderFactory.newInstance()
+                .newDocumentBuilder().newDocument();
+        NodeList itemNodes = document.getDocumentElement().getChildNodes();
+        
+        List<String> nodesToKeep = new ArrayList<String>(); {
+        	nodesToKeep.add("p:guid");
+        	nodesToKeep.add("p:title");
+        	nodesToKeep.add("p:published");
+        }
+        
+        for (int i = 0; i < itemNodes.getLength(); i++) {
+            Node itemNode = itemNodes.item(i);
+            NodeList itemAttributeNodes = itemNode.getChildNodes();
+            for (int j = 0; j < itemAttributeNodes.getLength(); j++) {
+                Node itemAttributeNode = itemAttributeNodes.item(j);
+                if (itemAttributeNode.getNodeType() == Node.ELEMENT_NODE) {
+                    if (!nodesToKeep.contains(itemAttributeNode.getNodeName())) {
+                    	itemNode.removeChild(itemAttributeNode);
+                    }
+                }
+			}
+        }
+        return getStringFromXmlDocument(document);
+	}
+	
+	public static String getStringFromXmlDocument(Document document) throws TransformerException {
+		DOMSource source = new DOMSource(document);
+	    StringWriter writer = new StringWriter();
+	    StreamResult result = new StreamResult(writer);
+	    TransformerFactory factory = TransformerFactory.newInstance();
+	    Transformer transformer = factory.newTransformer();
+	    transformer.transform(source, result);
+	    return writer.toString();
+	}
+	
+	
 	
 }
