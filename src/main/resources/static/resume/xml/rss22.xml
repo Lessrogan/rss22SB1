@@ -24,4 +24,14 @@
   	</p:author>
   	<p:content>Aujourd'hui est mon premier jour de faculté. Youpi !</p:content>
   </p:item>
+  <p:item>
+  	<p:guid>4</p:guid>
+  	<p:title>En ligne de mire</p:title>
+    <p:category term="Action"/>
+  	<p:published>2000-01-08</p:published>
+  	<p:author>
+  		<p:name>Gilbert Montagné</p:name>
+  	</p:author>
+  	<p:content>EN PLEIN DANS LE MILLE !</p:content>
+  </p:item>
 </p:feed>

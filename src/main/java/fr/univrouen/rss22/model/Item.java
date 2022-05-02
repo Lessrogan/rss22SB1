@@ -26,9 +26,8 @@ import java.time.LocalDateTime;
 public class Item {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@XmlElement(name = "guid")
-	private int id;
+	@XmlElement
+	private int guid;
 	
 	@XmlElement
 	private String title;
@@ -54,7 +53,8 @@ public class Item {
 	
 	public Item() {}
 	
-	public Item(String t, String d, Category c, Author a, String cnt) {
+	public Item(int g, String t, String d, Category c, Author a, String cnt) {
+		guid = g;
 		title = t;
 		published = d;
 		category = c;
@@ -62,7 +62,8 @@ public class Item {
 		content = cnt;
 	}
 	
-	public Item(String t, String d, Category c, Contributor cn, String cnt) {
+	public Item(int g, String t, String d, Category c, Contributor cn, String cnt) {
+		guid = g;
 		title = t;
 		published = d;
 		category = c;
@@ -70,8 +71,8 @@ public class Item {
 		content = cnt;
 	}
 	
-	public int getId() {
-		return id;
+	public int getGuid() {
+		return guid;
 	}
 	
 	public String getTitle() {
