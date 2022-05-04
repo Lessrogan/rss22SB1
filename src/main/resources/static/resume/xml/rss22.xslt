@@ -5,12 +5,14 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 xmlns:rss="http://univrouen.fr/rss22"
 xmlns:fn="http://www.w3.org/2005/xpath-functions">
 
+<xsl:output method="html"/>
 <xsl:template match="/rss:feed">
   <xsl:element name="html">
   
   	<xsl:element name="link">
   		<xsl:attribute name="href">/resume/css/rss22.css</xsl:attribute>
   		<xsl:attribute name="rel">stylesheet</xsl:attribute>
+  		;
 	</xsl:element>
   	<xsl:element name="body">
     

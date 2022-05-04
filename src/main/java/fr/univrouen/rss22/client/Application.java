@@ -1,10 +1,13 @@
 package fr.univrouen.rss22.client;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -12,11 +15,15 @@ import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.Scrollable;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
@@ -24,22 +31,26 @@ public class Application {
 
 	//ATTRIBUTS
 	
+	private RequestManager requestManager;
 	private JFrame mainFrame;
 	private JButton send;
 	private JButton importer;
+	private JFileChooser fileChooser;
 	private JButton write;
 	private JButton settings;
 	private JRadioButton get;
 	private JRadioButton post;
 	private JTextField url;
 	private JTextArea response;
+	private JScrollPane responseScrollPane;
 	private ButtonGroup methods;
+	private JLabel responseStatus;
 	
 	 
 	 //CONSTRUCTEURS
 	 
 	public Application() {
-		//createModel();
+		createModel();
 		createView();
 	    placeComponents();            
 	    createController();                
@@ -56,6 +67,10 @@ public class Application {
 
 	//OUTILS
 	 
+	private void createModel() {
+		requestManager = new RequestManager();
+	}
+	 
 	private void createView() {
 		 mainFrame = new JFrame("Application");
 	     final int frameWidth = 750;
@@ -64,45 +79,51 @@ public class Application {
 	     
 	     send = new JButton("Send");
 	     importer = new JButton("Import");
+	     fileChooser = new JFileChooser();
 	     write = new JButton("Write");
 	     settings = new JButton("Settings");
 	     
 	     methods = new ButtonGroup();
 	     get = new JRadioButton("GET");
-	     get.setActionCommand("get");
+	     get.setActionCommand("GET");
+	     get.setSelected(true);
 	     post = new JRadioButton("POST");
-	     post.setActionCommand("post");
+	     post.setActionCommand("POST");
 
 	     methods.add(get);
 	     methods.add(post);
 	     
-	     url = new JTextField("127.0.0.1:8080/");
-	     response = new JTextArea();
+	     url = new JTextField("http://127.0.0.1:8080/");
+	     response = new JTextArea("Server response");
+		 response.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 	     response.setEditable(false);
+	     responseScrollPane = new JScrollPane(response);
+	     responseStatus = new JLabel("Status :");
 	        
 	}
+	
 	private void placeComponents() {
-		 JPanel mainPanel = new JPanel(new GridLayout(1,3)); {
-			 JPanel txtPanel = new JPanel(new GridLayout(2,0)); {
-				 txtPanel.add(url);
-				 txtPanel.add(response);                                
+		 JPanel mainPanel = new JPanel(new GridLayout(1,2)); {
+			 JPanel txtPanel = new JPanel(new BorderLayout()); {
+				 txtPanel.add(url, BorderLayout.NORTH);
+				 txtPanel.add(responseScrollPane, BorderLayout.CENTER);
+				 txtPanel.add(responseStatus, BorderLayout.SOUTH);
 			 }
-			 JPanel buttonPanel = new JPanel(new GridLayout(4, 0)); {
-				 JPanel methodPanel = new JPanel(new GridLayout(2,0)); {
+			 JPanel buttonPanel = new JPanel(new GridLayout(0, 1)); {
+				 JPanel methodPanel = new JPanel(new GridLayout(1,0)); {
 					 methodPanel.add(get);
 					 methodPanel.add(post);
 				 }
 				 buttonPanel.add(methodPanel);
-				// buttonPanel.add(send);
 				 buttonPanel.add(importer);
-				 buttonPanel.add(write);
+				 //buttonPanel.add(write);
+				 buttonPanel.add(send);
 				 buttonPanel.add(settings);
 				 
 				 
 			 }
 			mainPanel.add(txtPanel);
 			mainPanel.add(buttonPanel);
-			mainPanel.add(send);
 		 }
 		 mainFrame.add(mainPanel);
 		
@@ -112,9 +133,21 @@ public class Application {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ButtonModel selection = methods.getSelection();
-				System.out.println("[ SEND ]\n" + response.getText() + "\n"
-									+ "(TO)\n" + url.getText()
-									+ "(" + (selection != null ? selection.getActionCommand(): "none") + ")");
+				response.setText(requestManager.send(url.getText(), selection.getActionCommand()																				));
+			}
+		});
+		importer.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int returnVal = fileChooser.showOpenDialog(new JFrame());
+
+		        if (returnVal == JFileChooser.APPROVE_OPTION) {
+		            File file = fileChooser.getSelectedFile();
+		            requestManager.setFile(file);
+		            importer.setText("Import\n" + "(" + file.getName() + ")");
+		        } else {
+		        	System.out.println("Open command cancelled by user.");
+		        }
 			}
 		});
 		
