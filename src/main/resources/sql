@@ -1,6 +1,0 @@
-SELECT f.id, f.pub_date AS "feed_date", f.title AS "feed_title", i.guid AS "item_id", i.title AS "item_title", i.published AS "item_date",category_term AS "category", i.content, email, name, url,dtype 
-FROM feed AS f
-INNER JOIN feed_items AS fi ON f.id = fi.feed_id 
-INNER JOIN item AS i ON fi.items_guid = i.guid
-INNER JOIN person AS p ON p.id = i.author_id OR p.id = i.contributor_id
-INNER JOIN category AS c ON c.term = i.category_term;

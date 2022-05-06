@@ -1,0 +1,313 @@
+{
+	"info": {
+		"_postman_id": "1b5a6835-2aeb-4300-bcb9-73015d915095",
+		"name": "RSS22SB1_Bertin_Denise",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}",
+					"host": [
+						"{{url}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/help",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/help",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"help"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/resume/html",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/rss22/resume/html",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"rss22",
+						"resume",
+						"html"
+					]
+				},
+				"description": "Affichage HTML des articles"
+			},
+			"response": []
+		},
+		{
+			"name": "/resume/html/2 (valide)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/rss22/resume/html/2",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"rss22",
+						"resume",
+						"html",
+						"2"
+					]
+				},
+				"description": "Affichage HTML des articles"
+			},
+			"response": []
+		},
+		{
+			"name": "/resume/html/10 (invalide)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/rss22/resume/html/10",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"rss22",
+						"resume",
+						"html",
+						"10"
+					]
+				},
+				"description": "Affichage HTML des articles"
+			},
+			"response": []
+		},
+		{
+			"name": "/resume/xml",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/rss22/resume/xml",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"rss22",
+						"resume",
+						"xml"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/resume/xml/2 (valide)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/rss22/resume/xml/2",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"rss22",
+						"resume",
+						"xml",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/resume/xml/10 (invalide)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/rss22/resume/xml/10",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"rss22",
+						"resume",
+						"xml",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/insert correct",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<p:feed xmlns:p=\"http://univrouen.fr/rss22\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://univrouen.fr/rss22 rss22.xsd \">\n  <p:title>RSS22 XML1</p:title>\n  <p:pubDate>2001-11-28</p:pubDate>\n  <p:copyright>o'top</p:copyright>\n  <p:link url=\"http://youtube.com\"/>\n  <p:item>\n    <p:guid>1</p:guid>\n    <p:title>Les chiens sont de sortie</p:title>\n    <p:category term=\"Documentaire\"/>\n    <p:published>1999-12-30</p:published>\n    <p:author>\n      <p:name>Denise Antoine</p:name>\n    </p:author>\n    <p:content>Avec l'ouverture de la chasse, les chiens sont de sortie.</p:content>\n  </p:item>\n  <p:item>\n  \t<p:guid>2</p:guid>\n  \t<p:title>Mon premier jour de faculté</p:title>\n    <p:category term=\"Jeunesse\"/>\n  \t<p:published>2001-11-28</p:published>\n  \t<p:author>\n  \t\t<p:name>Bertin Nicolas</p:name>\n  \t</p:author>\n  \t<p:content>Aujourd'hui est mon premier jour de faculté. Youpi !</p:content>\n  </p:item>\n  <p:item>\n  \t<p:guid>4</p:guid>\n  \t<p:title>En ligne de mire</p:title>\n    <p:category term=\"Action\"/>\n  \t<p:published>2000-01-08</p:published>\n  \t<p:author>\n  \t\t<p:name>Mirabelle Ervine</p:name>\n  \t</p:author>\n  \t<p:content>EN PLEIN DANS LE MILLE !</p:content>\n  </p:item>\n  <p:item>\n  \t<p:guid>5</p:guid>\n  \t<p:title>En ligne de mire</p:title>\n    <p:category term=\"Action\"/>\n  \t<p:published>2015-05-25</p:published>\n  \t<p:author>\n  \t\t<p:name>Mirabelle Ervine</p:name>\n  \t</p:author>\n  \t<p:content>REBELOTTE !</p:content>\n  </p:item>\n  <p:item>\n  \t<p:guid>7</p:guid>\n  \t<p:title>Le rhodo-dindon</p:title>\n    <p:category term=\"Humour\"/>\n  \t<p:published>2015-05-25</p:published>\n  \t<p:author>\n  \t\t<p:name>Helène Demouton</p:name>\n  \t</p:author>\n  \t<p:content>REBELOTTE (de laine, petite blague)!</p:content>\n  </p:item>\n</p:feed>\n",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/rss22/insert",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"rss22",
+						"insert"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/insert non-valide",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<p:feed xmlns:p=\"http://univrouen.fr/rss22\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://univrouen.fr/rss22 rss22.xsd \">\n    <p:title>RSS22 XML1</p:title>\n    <p:pubDate>2001-11-28</p:pubDate>\n    <p:copyright>o'top</p:copyright>\n    <p:link url=\"http://youtube.com\"/>\n    <p:item>\n        <p:guid>1</p:guid>\n        <p:category term=\"Documentaire\"/>\n        <p:published>1999-12-30</p:published>\n        <p:author>\n            <p:name>Denise Antoine</p:name>\n        </p:author>\n        <p:content>Avec l'ouverture de la chasse, les chiens sont de sortie.</p:content>\n    </p:item>\n    <p:item>\n        <p:guid>2</p:guid>\n        <p:title>Mon premier jour de faculté</p:title>\n        <p:category term=\"Jeunesse\"/>\n        <p:published>2001-11-28</p:published>\n        <p:author>\n            <p:name>Bertin Nicolas</p:name>\n        </p:author>\n        <p:content>Aujourd'hui est mon premier jour de faculté. Youpi !</p:content>\n    </p:item>\n    <p:item>\n        <p:guid>4</p:guid>\n        <p:title>En ligne de mire</p:title>\n        <p:category term=\"Action\"/>\n        <p:published>2000-01-08</p:published>\n        <p:author>\n            <p:name>Mirabelle Ervine</p:name>\n        </p:author>\n        <p:content>EN PLEIN DANS LE MILLE !</p:content>\n    </p:item>\n</p:feed>",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/rss22/insert",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"rss22",
+						"insert"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/delete/1",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/rss22/delete/1",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"rss22",
+						"delete",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/search (2 paramètres)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/rss22/search?titre=En ligne de mire&date=2001-01-01",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"rss22",
+						"search"
+					],
+					"query": [
+						{
+							"key": "titre",
+							"value": "En ligne de mire"
+						},
+						{
+							"key": "date",
+							"value": "2001-01-01"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/search (1 paramètre : date)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/rss22/search?date=2001-01-01",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"rss22",
+						"search"
+					],
+					"query": [
+						{
+							"key": "date",
+							"value": "2001-01-01"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/search (1 paramètre : titre)",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/rss22/search?titre=En ligne de mire",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"rss22",
+						"search"
+					],
+					"query": [
+						{
+							"key": "titre",
+							"value": "En ligne de mire"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
