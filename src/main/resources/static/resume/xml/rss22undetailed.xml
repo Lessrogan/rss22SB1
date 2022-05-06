@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <p:feed xmlns:p="http://univrouen.fr/rss22" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://univrouen.fr/rss22 rss22.xsd ">
-  <p:title>RSS22 XML1</p:title>
+  <p:title>Feed sans details</p:title>
   <p:pubDate>2001-11-28</p:pubDate>
   <p:copyright>o'top</p:copyright>
   <p:link url="http://youtube.com"/>

@@ -20,8 +20,8 @@ public abstract class Person {
 	@XmlElement
 	private String email;
 	
-	@XmlElement
-	private String url;
+	@XmlElement()
+	private String uri;
 	
 	public Person() {
 		
@@ -30,7 +30,7 @@ public abstract class Person {
 	public Person(String n, String e, String u) {
 		name = n;
 		email = e;
-		url = u;
+		uri = u;
 	}
 	
 }

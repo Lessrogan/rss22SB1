@@ -21,8 +21,10 @@ import fr.univrouen.rss22.model.Item;
 import fr.univrouen.rss22.model.ItemRepository;
 import fr.univrouen.rss22.model.PersonRepository;
 import fr.univrouen.rss22.model.CategoryRepository;
+import fr.univrouen.rss22.model.ContentRepository;
 import fr.univrouen.rss22.model.Feed;
 import fr.univrouen.rss22.model.FeedRepository;
+import fr.univrouen.rss22.model.ImageRepository;
 
 @Controller
 public class RSSController {
@@ -35,6 +37,10 @@ public class RSSController {
 	private PersonRepository personRepository;
 	@Autowired
 	private CategoryRepository categoryRepository;
+	@Autowired
+	private ImageRepository imageRepository;
+	@Autowired
+	private ContentRepository contentRepository;
 	
 	@PostMapping("/rss22/insert")
 	public @ResponseBody String insert(@RequestBody String xml, HttpServletResponse response) {
@@ -59,6 +65,12 @@ public class RSSController {
 				if (item.getCategory() != null) {
 					categoryRepository.save(item.getCategory());
 				}
+				if (item.getImage() != null) {
+					imageRepository.save(item.getImage());
+				}
+				if (item.getContent() != null) {
+					contentRepository.save(item.getContent());
+				}
 				itemRepository.save(item);
 			}
 			feedRepository.save(feed);
@@ -80,7 +92,12 @@ public class RSSController {
 			List<Feed> feeds = (List<Feed>) feedRepository.findAll();
 			for (Feed feed : feeds) {
 				feed.removeItem(item);
-				feedRepository.save(feed);
+				//	Si le feed est vide, on le retire
+				if (feed.getItems().size() == 0) {
+					feedRepository.delete(feed);
+				} else {
+					feedRepository.save(feed);
+				}
 			}
 			itemRepository.delete(item);
 			return itemId.toString();

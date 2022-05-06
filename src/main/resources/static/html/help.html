@@ -6,11 +6,11 @@
 </head>
 <body>
 <h1>Help</h1>
-<p>Afin de vous aider lors de l'utilisation de notre API, voici quelques outils</p>
-<p>Liste des articles</p>
+<p>Afin de vous aider lors de l'utilisation de notre API, voici les liens disponibles pour gérer le flux RSS:</p>
+<h3>Liste des articles</h3>
 <ul>
 	<li>
-		<p>Format XML</p>
+		<h4>Format XML</h4>
 		<ul>
 			<li>URL : /rss22/resume/xml</li>
 			<li>Méthode : GET</li>
@@ -18,7 +18,7 @@
 		</ul>
 	</li>
 	<li>
-		<p>Format HTML</p>
+		<h4>Format HTML</h4>
 		<ul>
 			<li>URL : /rss22/resume/html</li>
 			<li>Méthode : GET</li>
@@ -27,10 +27,10 @@
 	</li>
 </ul>
 
-<p>Détails des articles</p>
+<h3>Détails d'un article</h3>
 <ul>
 	<li>
-		<p>Format XML</p>
+		<h4>Format XML</h4>
 		<ul>
 			<li>URL : /rss22/resume/xml/{guid}
 		{guid} = valeur numérique de l’identifiant</li>
@@ -39,7 +39,7 @@
 		</ul>
 	</li>
 	<li>
-		<p>Format HTML</p>
+		<h4>Format HTML</h4>
 		<ul>
 			<li>URL : /rss22/html/{guid}
 		{guid} = valeur numérique de l’identifiant</li>
@@ -48,22 +48,29 @@
 		</ul>
 	</li>
 </ul>
-<p>Ajout d'un artcile dans la base</p>
+<h3>Ajout d'un article dans la base</h3>
 <ul>
 	<li>URL : rss22/insert</li>
 	<li>Méthode : POST</li>
-	<li>Le flux reçu est validé par le schéma XSD de définition  rss22
+	<li>Le flux reçu est validé par le schéma XSD de définition rss22
 Si le flux est déjà présent, (même titre et date) alors une indication d’erreur est retournée.
 Si l’opération est réussie, alors le flux est ajouté à la base et sa persistance est assurée.</li>
 </ul>
-<p>Suppression d'un article</p>
+<h3>Suppression d'un article</h3>
 <ul>
 	<li>URL : /rss22/delete/{guid}
 {guid} = valeur numérique de l’identifiant</li>
 	<li>Méthode : DELETE</li>
 	<li>Suppression de l’article dont l’identifiant est {guid}
-Pour garantir la cohérence, tout flux rss22 vide (c’est à dire ne contenant aucun article) doit 
-être supprimé</li>
+	Pour garantir la cohérence, tout flux rss22 vide (c’est à dire ne contenant aucun article) doit 
+	être supprimé</li>
+</ul>
+<h3>Recherche d'articles</h3>
+<ul>
+	<li>URL : /rss22/search?...
+	<li>Méthode : GET</li>
+	<li>Recherche parmi les articles ceux correspondant aux critères entrés (titre, date au format YYYY-MM-DD) </li>
+	<li>Retourne le flux xml correspond aux articles satisfaisant les critères entrés. Si aucun article n'est trouvé, seul le statut NONE est retourné</li>
 </ul>
 </body>
 </html>

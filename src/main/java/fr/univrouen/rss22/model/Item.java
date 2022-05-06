@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -36,7 +37,6 @@ public class Item {
 	private String published;
 	
 	@XmlElement
-	@XmlReadOnly
 	@ManyToOne(targetEntity = Category.class)
 	private Category category;
 
@@ -49,11 +49,19 @@ public class Item {
 	private Contributor contributor;
 
 	@XmlElement
-	private String content;
+	@OneToOne(targetEntity = Content.class)
+	private Content content;
+	
+	@XmlElement(required = false)
+	private String copyright;
+	
+	@XmlElement(required = false)
+	@ManyToOne(targetEntity = Image.class)
+	private Image image;
 	
 	public Item() {}
 	
-	public Item(int g, String t, String d, Category c, Author a, String cnt) {
+	public Item(int g, String t, String d, Category c, Author a, Content cnt) {
 		guid = g;
 		title = t;
 		published = d;
@@ -62,7 +70,7 @@ public class Item {
 		content = cnt;
 	}
 	
-	public Item(int g, String t, String d, Category c, Contributor cn, String cnt) {
+	public Item(int g, String t, String d, Category c, Contributor cn, Content cnt) {
 		guid = g;
 		title = t;
 		published = d;
@@ -95,4 +103,11 @@ public class Item {
 		return contributor;
 	}
 	
+	public Content getContent() {
+		return content;
+	}
+
+	public Image getImage() {
+		return image;
+	}
 }

@@ -1,0 +1,6 @@
+mai 06, 2022 8:25:45 PM fr.univrouen.rss22.client.RequestManager send
+GRAVE: Server returned HTTP response code: 500 for URL: http://127.0.0.1:8080/rss22/insert
+mai 06, 2022 8:26:49 PM fr.univrouen.rss22.client.RequestManager send
+GRAVE: Server returned HTTP response code: 405 for URL: http://127.0.0.1:8080/rss22/resume/xml
+mai 06, 2022 8:31:56 PM fr.univrouen.rss22.client.RequestManager send
+GRAVE: Server returned HTTP response code: 405 for URL: http://127.0.0.1:8080/rss22/resume/xml

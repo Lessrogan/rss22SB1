@@ -31,7 +31,6 @@ public class Application {
 	private JButton send;
 	private JButton importer;
 	private JFileChooser fileChooser;
-	private JButton settings;
 	private JRadioButton get;
 	private JRadioButton post;
 	private JRadioButton delete;
@@ -75,7 +74,6 @@ public class Application {
 	     send = new JButton("Send");
 	     importer = new JButton("Import");
 	     fileChooser = new JFileChooser();
-	     settings = new JButton("Settings");
 	     
 	     methods = new ButtonGroup();
 	     get = new JRadioButton("GET");
@@ -114,11 +112,7 @@ public class Application {
 				 }
 				 buttonPanel.add(methodPanel);
 				 buttonPanel.add(importer);
-				 //buttonPanel.add(write);
 				 buttonPanel.add(send);
-				 buttonPanel.add(settings);
-				 
-				 
 			 }
 			mainPanel.add(txtPanel);
 			mainPanel.add(buttonPanel);

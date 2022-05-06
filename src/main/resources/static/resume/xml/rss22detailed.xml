@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:feed lang="fr" xmlns:p="http://univrouen.fr/rss22" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://univrouen.fr/rss22 rss22.xsd ">
+  <p:title>Feed avec details</p:title>
+  <p:pubDate>11999-12-30</p:pubDate>
+  <p:copyright>copyright</p:copyright>
+  <p:link rel="self" url="blabla.com"/>
+  <p:item>
+    <p:guid>15</p:guid>
+    <p:title>MySpace</p:title>
+    <p:category term="Histoire"/>
+    <p:published>2025-01-01</p:published>
+    <p:image format="GIF" href="http://myspace.org"/>
+    <p:author>
+      <p:name>Barnabé Casse</p:name>
+      <p:email>barnabecasse@gmail.com</p:email>
+      <p:uri>barnabe.casse</p:uri>
+    </p:author>
+    <p:content src="http://myspace.org">C'était mon espace mais maintenant ça ne l'est plus...</p:content>
+  </p:item>
+  <p:item>
+    <p:guid>16</p:guid>
+    <p:title>Recettes d'huile de coude</p:title>
+    <p:category term="Gastronomie"/>
+    <p:published>2005-05-07</p:published>
+    <p:image format="JPEG" href="http://coude.org"/>
+    <p:author>
+      <p:name>Gaspard Ccio</p:name>
+      <p:email>gaspardccio@gmail.com</p:email>
+      <p:uri>gaspardccio.com</p:uri>
+    </p:author>
+    <p:content src="http://coude.org">Ca huile</p:content>
+  </p:item>
+  <p:item>
+    <p:guid>17</p:guid>
+    <p:title>Boeuf</p:title>
+    <p:category term="Langues"/>
+    <p:published>2021-01-09</p:published>
+    <p:image format="GIF" href="http://boeuf.org"/>
+    <p:author>
+      <p:name>Franck Leboeuf</p:name>
+      <p:email>leboeuf@gmail.com</p:email>
+      <p:uri>leboeuf.com</p:uri>
+    </p:author>
+    <p:content src="http://boeuf.org">Discussions, sans langue de boeuf...</p:content>
+  </p:item>
+</p:feed>
