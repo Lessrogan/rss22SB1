@@ -49,7 +49,7 @@ import fr.univrouen.rss22.model.Feed;
 import fr.univrouen.rss22.model.FeedRepository;
 
 @Controller
-public class DBController {
+public class RSSController {
 
 	@Autowired
 	private FeedRepository feedRepository;
