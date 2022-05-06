@@ -40,6 +40,7 @@ public class Application {
 	private JButton settings;
 	private JRadioButton get;
 	private JRadioButton post;
+	private JRadioButton delete;
 	private JTextField url;
 	private JTextArea response;
 	private JScrollPane responseScrollPane;
@@ -86,12 +87,15 @@ public class Application {
 	     methods = new ButtonGroup();
 	     get = new JRadioButton("GET");
 	     get.setActionCommand("GET");
-	     get.setSelected(true);
+	     if (methods.getSelection() == null) get.setSelected(true);
 	     post = new JRadioButton("POST");
 	     post.setActionCommand("POST");
+	     delete = new JRadioButton("DELETE");
+	     delete.setActionCommand("DELETE");
 
 	     methods.add(get);
 	     methods.add(post);
+	     methods.add(delete);
 	     
 	     url = new JTextField("http://127.0.0.1:8080/");
 	     response = new JTextArea("Server response");
@@ -113,6 +117,7 @@ public class Application {
 				 JPanel methodPanel = new JPanel(new GridLayout(1,0)); {
 					 methodPanel.add(get);
 					 methodPanel.add(post);
+					 methodPanel.add(delete);
 				 }
 				 buttonPanel.add(methodPanel);
 				 buttonPanel.add(importer);
@@ -133,7 +138,9 @@ public class Application {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ButtonModel selection = methods.getSelection();
-				response.setText(requestManager.send(url.getText(), selection.getActionCommand()																				));
+				HTTPResponse httpResponse = requestManager.send(url.getText(), selection.getActionCommand());
+				response.setText(httpResponse.getContent());
+				responseStatus.setText("Status: " + String.valueOf(httpResponse.getStatus()));
 			}
 		});
 		importer.addActionListener(new ActionListener() {

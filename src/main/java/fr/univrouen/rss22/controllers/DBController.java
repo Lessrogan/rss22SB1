@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBContext;
@@ -35,6 +37,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.xml.sax.SAXException;
 
 import fr.univrouen.rss22.client.rsshandling.XMLManager;
+import fr.univrouen.rss22.logger.RSSLogger;
 import fr.univrouen.rss22.model.Item;
 import fr.univrouen.rss22.model.ItemRepository;
 import fr.univrouen.rss22.model.Person;
@@ -47,7 +50,7 @@ import fr.univrouen.rss22.model.FeedRepository;
 
 @Controller
 public class DBController {
-	
+
 	@Autowired
 	private FeedRepository feedRepository;
 	@Autowired
@@ -60,15 +63,15 @@ public class DBController {
 	@PostMapping("/insert")
 	public @ResponseBody String insert(@RequestBody String xml, HttpServletResponse response) {
 		try {
+			System.out.println("[ XML ]");
+			System.out.println(xml);
 			Feed feed = XMLManager.getFeedFromXML(xml);
 			//	Vérifie qu'un feed similaire n'existe pas
 			List<Feed> feeds = (List<Feed>) feedRepository.findAll();
 			for (Feed existingFeed : feeds) {
-				System.out.println("Title:" + existingFeed.getTitle() + "/" + feed.getTitle() + " " + String.valueOf(existingFeed.getTitle().equals(feed.getTitle())));
-				System.out.println("pubDate:" + existingFeed.getPubDate() + "/" + feed.getPubDate() + " " + String.valueOf(existingFeed.getPubDate().equals(feed.getPubDate())));
 				if (existingFeed.getTitle().equals(feed.getTitle())
 					&& existingFeed.getPubDate().equals(feed.getPubDate())) {
-					throw new Exception();
+					throw new Exception("Feed already existing");
 				}
 			}
 			
@@ -89,6 +92,8 @@ public class DBController {
 			List<Item> items = feed.getItems();
 			return String.valueOf(items.get(items.size()-1).getGuid());
 		} catch(Exception e) {
+			e.printStackTrace();
+			RSSLogger.logError(e.getMessage(), Thread.currentThread().getStackTrace()[1].getMethodName(), getClass().getName());
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return "";
 		}
@@ -107,6 +112,7 @@ public class DBController {
 			itemRepository.delete(item);
 			return itemId.toString();
 		} catch(Exception e) {
+			RSSLogger.logError(e.getMessage(), Thread.currentThread().getStackTrace()[1].getMethodName(), getClass().getName());
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return "";
 		}
@@ -126,6 +132,7 @@ public class DBController {
 			}
 			return XMLManager.getRestrictedXMLFromFeed(feed);
 		} catch(Exception e) {
+			RSSLogger.logError(e.getMessage(), Thread.currentThread().getStackTrace()[1].getMethodName(), getClass().getName());
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return "";
 		}
@@ -146,6 +153,7 @@ public class DBController {
 			String xml = XMLManager.getHTMLFromFeed(feed);
 			return xml;
 		} catch(Exception e) {
+			RSSLogger.logError(e.getMessage(), Thread.currentThread().getStackTrace()[1].getMethodName(), getClass().getName());
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return "";
 		}

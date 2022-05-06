@@ -14,7 +14,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
 
+import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -33,6 +35,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
@@ -48,11 +53,12 @@ import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.SAXException;
 
 import fr.univrouen.rss22.model.Item;
+import fr.univrouen.rss22.logger.RSSLogger;
 import fr.univrouen.rss22.model.Feed;
 
 
 public class XMLManager {
-	
+
 	public static Item getItemFromXML(String xml) throws JAXBException {
         JAXBContext jc = JAXBContext.newInstance(Item.class);
         Unmarshaller unmarshaller = jc.createUnmarshaller();
@@ -63,6 +69,18 @@ public class XMLManager {
 	}
 	
 	public static Feed getFeedFromXML(String xml) throws JAXBException {
+		try {
+			Source input = new StreamSource(new StringReader(xml));
+			SchemaFactory schemaFactory = SchemaFactory
+				    .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+			Source xsd = new StreamSource("file:src/main/resources/static/resume/xml/rss22.xsd");
+			  Schema schema = schemaFactory.newSchema(xsd);
+			  Validator validator = schema.newValidator();
+			  validator.validate(input);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
         JAXBContext jc = JAXBContext.newInstance(Feed.class);
         Unmarshaller unmarshaller = jc.createUnmarshaller();
         StringWriter sw = new StringWriter();
