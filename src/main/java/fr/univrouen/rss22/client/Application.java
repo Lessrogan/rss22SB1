@@ -3,13 +3,10 @@ package fr.univrouen.rss22.client;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -23,9 +20,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.Scrollable;
 import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
 
 public class Application {
 
@@ -36,7 +31,6 @@ public class Application {
 	private JButton send;
 	private JButton importer;
 	private JFileChooser fileChooser;
-	private JButton write;
 	private JButton settings;
 	private JRadioButton get;
 	private JRadioButton post;
@@ -81,7 +75,6 @@ public class Application {
 	     send = new JButton("Send");
 	     importer = new JButton("Import");
 	     fileChooser = new JFileChooser();
-	     write = new JButton("Write");
 	     settings = new JButton("Settings");
 	     
 	     methods = new ButtonGroup();

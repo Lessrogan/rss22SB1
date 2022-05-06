@@ -2,6 +2,8 @@ package fr.univrouen.rss22.client;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -36,11 +38,27 @@ public class RequestManager {
 	
 	// Retourne la réponse à la requête HTTP
 	public HTTPResponse send(String urlString, String method) {
+		//	Crée la connexion HTTP
+		//	Crée l'URL
+		URL url;
+		HttpURLConnection connection = null;
 		try {
-			//	Crée l'URL
-			URL url = new URL(urlString);
-			//	Crée la connexion HTTP
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			url = new URL(urlString);
+			connection = (HttpURLConnection) url.openConnection();
+		} catch (Exception e) {
+			RSSLogger.logError(e.getMessage(), Thread.currentThread().getStackTrace()[1].getMethodName(), getClass().getName());
+			int status = 404;
+			try {
+				if (connection != null) {
+					connection.getResponseCode();	
+				}
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			HTTPResponse response = new HTTPResponse(status, "");
+			return response;
+		}
+		try {
 			//	Set la méthode
 			connection.setRequestMethod(method);
 			connection.setDoInput(true);
@@ -61,7 +79,8 @@ public class RequestManager {
 			// Récupère le statut de la réponse
 			int status = connection.getResponseCode();
 			//	Récupère le contenu de réponse
-			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+			InputStream inputStream = connection.getInputStream();
+			BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
 			String inputLine;
 			StringBuffer content = new StringBuffer();
 			while ((inputLine = in.readLine()) != null) {
@@ -69,32 +88,42 @@ public class RequestManager {
 			}
 			in.close();
 			String contentString = content.toString();
-			contentString = contentString.startsWith("<xml") ? parse(contentString, ContentType.XML) : parse(contentString, ContentType.HTML);
+			if (contentString.startsWith("<?xml")) {
+				contentString = parse(contentString, ContentType.XML);
+			} else if (contentString.contains("<html>")) {
+				contentString = parse(contentString, ContentType.XML);
+			}
 			HTTPResponse response = new HTTPResponse(status, contentString);
 			return response;
 		} catch (Exception e) {
-			RSSLogger.logError(e.getMessage(), Thread.currentThread().getStackTrace()[0].getMethodName(), getClass().getName());
-			e.printStackTrace();
-			return null;
+			RSSLogger.logError(e.getMessage(), Thread.currentThread().getStackTrace()[1].getMethodName(), getClass().getName());
+			int status = 404;
+			try {
+				if (connection != null) {
+					status = connection.getResponseCode();	
+				}
+			} catch (IOException e1) {
+				RSSLogger.logError(e.getMessage(), Thread.currentThread().getStackTrace()[1].getMethodName(), getClass().getName());
+			}
+			HTTPResponse response = new HTTPResponse(status, "");
+			return response;
 		}
 	}
 	
 	private String parse(String xml, ContentType type) {
 		String result = null;
-		// A REVOIR (PROBLEME D'ACCENTS)
-		xml = xml.replace("&eacute;", "é");
-		System.out.println(xml);
+		xml = SpecialCharacter.replaceHTMLCharactersInString(xml);
 		try {
 	        OutputFormat format = OutputFormat.createPrettyPrint();
 	        format.setEncoding("UTF-8");
-
+	        
 	        org.dom4j.Document document = DocumentHelper.parseText(xml);
 	        StringWriter sw = new StringWriter();
 	        XMLWriter writer = type.getNewWriter(sw, format);
 	        writer.write(document);
 	        result = sw.toString();
 	    } catch (Exception e) {
-			RSSLogger.logError(e.getMessage(), Thread.currentThread().getStackTrace()[0].getMethodName(), getClass().getName());
+			RSSLogger.logError(e.getMessage(), Thread.currentThread().getStackTrace()[1].getMethodName(), getClass().getName());
 	    	e.printStackTrace();
 	    }
 		return result;
