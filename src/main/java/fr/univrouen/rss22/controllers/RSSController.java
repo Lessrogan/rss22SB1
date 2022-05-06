@@ -1,28 +1,11 @@
 package fr.univrouen.rss22.controllers;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamWriter;
-import javax.xml.transform.TransformerException;
-import javax.xml.xpath.XPathExpressionException;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,19 +14,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.server.ResponseStatusException;
-import org.xml.sax.SAXException;
-
 import fr.univrouen.rss22.client.rsshandling.XMLManager;
 import fr.univrouen.rss22.logger.RSSLogger;
 import fr.univrouen.rss22.model.Item;
 import fr.univrouen.rss22.model.ItemRepository;
-import fr.univrouen.rss22.model.Person;
 import fr.univrouen.rss22.model.PersonRepository;
-import fr.univrouen.rss22.model.Author;
-import fr.univrouen.rss22.model.Category;
 import fr.univrouen.rss22.model.CategoryRepository;
 import fr.univrouen.rss22.model.Feed;
 import fr.univrouen.rss22.model.FeedRepository;
@@ -60,11 +36,9 @@ public class RSSController {
 	@Autowired
 	private CategoryRepository categoryRepository;
 	
-	@PostMapping("/insert")
+	@PostMapping("/rss22/insert")
 	public @ResponseBody String insert(@RequestBody String xml, HttpServletResponse response) {
 		try {
-			System.out.println("[ XML ]");
-			System.out.println(xml);
 			Feed feed = XMLManager.getFeedFromXML(xml);
 			//	Vérifie qu'un feed similaire n'existe pas
 			List<Feed> feeds = (List<Feed>) feedRepository.findAll();
@@ -99,11 +73,10 @@ public class RSSController {
 		}
 	}
 	
-	@DeleteMapping(value = {"/delete/{guid}"}, produces = MediaType.APPLICATION_XML_VALUE)
+	@DeleteMapping(value = {"/rss22/delete/{guid}"}, produces = MediaType.APPLICATION_XML_VALUE)
 	public @ResponseBody String delete(@PathVariable(name = "guid") Integer itemId, HttpServletResponse response) {
 		try {
 			Item item  = itemRepository.findById(itemId).get();
-			String xml = XMLManager.getXMLFromItem(item);
 			List<Feed> feeds = (List<Feed>) feedRepository.findAll();
 			for (Feed feed : feeds) {
 				feed.removeItem(item);
@@ -118,7 +91,7 @@ public class RSSController {
 		}
 	}
 	
-	@GetMapping(value = {"/resume/xml", "/resume/xml/{guid}"}, produces = MediaType.APPLICATION_XML_VALUE)
+	@GetMapping(value = {"/rss22/resume/xml", "/rss22/resume/xml/{guid}"}, produces = MediaType.APPLICATION_XML_VALUE)
 	public @ResponseBody String getXMLRSS(@PathVariable(name = "guid", required = false) Integer itemId, HttpServletResponse response) {
 		try {
 			Feed feed = new Feed();
@@ -138,7 +111,7 @@ public class RSSController {
 		}
 	}
 
-	@GetMapping(value = {"/resume/html", "/resume/html/{guid}"}) 
+	@GetMapping(value = {"/rss22/resume/html", "/rss22/resume/html/{guid}"}) 
 	public @ResponseBody String getHTMLRSS(@PathVariable(name = "guid", required = false) Integer itemId, HttpServletResponse response) {
 		try {
 			Feed feed = new Feed();
@@ -152,6 +125,38 @@ public class RSSController {
 			}
 			String xml = XMLManager.getHTMLFromFeed(feed);
 			return xml;
+		} catch(Exception e) {
+			RSSLogger.logError(e.getMessage(), Thread.currentThread().getStackTrace()[1].getMethodName(), getClass().getName());
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return "";
+		}
+	}
+	
+	@GetMapping(value = "/rss22/search", produces = MediaType.APPLICATION_XML_VALUE)
+	public @ResponseBody String search(@RequestParam(name = "titre", required = false) String title, @RequestParam(name = "date", required = false) String date, HttpServletResponse response) {
+		try {
+			Feed feed = new Feed();
+			Iterator<Item> items = itemRepository.findAll().iterator();
+			boolean isDateRequired = date != null;
+			DateTimeFormatter formatter = null;
+			LocalDate referenceDate = null;
+			if (isDateRequired) {
+				formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+				referenceDate = LocalDate.parse(date, formatter);
+			}
+			while (items.hasNext()) {
+				Item item = items.next();
+				boolean isDateValid = true;
+				if (isDateRequired) {
+					LocalDate itemDate = LocalDate.parse(item.getDate(), formatter);
+					isDateValid = (itemDate.isAfter(referenceDate) || itemDate.isEqual(referenceDate));
+				}
+				boolean isTitleValid = title == null || item.getTitle().equals(title);
+				if (isDateValid && isTitleValid) {
+					feed.addItem(item);
+				}
+			}
+			return feed.getItems().size() == 0 ? "":XMLManager.getRestrictedXMLFromFeed(feed);
 		} catch(Exception e) {
 			RSSLogger.logError(e.getMessage(), Thread.currentThread().getStackTrace()[1].getMethodName(), getClass().getName());
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

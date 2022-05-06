@@ -2,34 +2,25 @@ package fr.univrouen.rss22.client.rsshandling;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.namespace.NamespaceContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -38,22 +29,14 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.ls.DOMImplementationLS;
-import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.SAXException;
 
 import fr.univrouen.rss22.model.Item;
-import fr.univrouen.rss22.logger.RSSLogger;
 import fr.univrouen.rss22.model.Feed;
 
 
@@ -70,13 +53,13 @@ public class XMLManager {
 	
 	public static Feed getFeedFromXML(String xml) throws JAXBException {
 		try {
-			Source input = new StreamSource(new StringReader(xml));
-			SchemaFactory schemaFactory = SchemaFactory
-				    .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-			Source xsd = new StreamSource("file:src/main/resources/static/resume/xml/rss22.xsd");
-			  Schema schema = schemaFactory.newSchema(xsd);
-			  Validator validator = schema.newValidator();
-			  validator.validate(input);
+	Source input = new StreamSource(new StringReader(xml));
+	SchemaFactory schemaFactory = SchemaFactory
+		    .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+	Source xsd = new StreamSource("file:src/main/resources/static/resume/xml/rss22.xsd");
+	  Schema schema = schemaFactory.newSchema(xsd);
+	  Validator validator = schema.newValidator();
+	  validator.validate(input);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
