@@ -156,7 +156,11 @@ public class RSSController {
 					feed.addItem(item);
 				}
 			}
-			return feed.getItems().size() == 0 ? "":XMLManager.getRestrictedXMLFromFeed(feed);
+			if (feed.getItems().size() == 0) {
+				response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+				return "";
+			}
+			return XMLManager.getRestrictedXMLFromFeed(feed);
 		} catch(Exception e) {
 			RSSLogger.logError(e.getMessage(), Thread.currentThread().getStackTrace()[1].getMethodName(), getClass().getName());
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
